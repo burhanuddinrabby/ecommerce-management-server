@@ -10,7 +10,19 @@ const variantSchema = new Schema({
         type: String,
         required: true,
     }
-});
+}, { _id: false });
+
+const inventorySchema = new Schema({
+    quantity: {
+        type: Number,
+        required: true,
+    },
+    inStock: {
+        type: Boolean,
+        required: true,
+    }
+}, { _id: false });
+
 const ProductSchema = new Schema<Product>({
     name: {
         type: String,
@@ -39,10 +51,7 @@ const ProductSchema = new Schema<Product>({
         required: true
     },
     inventory: {
-        type: {
-            quantity: Number,
-            inStock: Boolean
-        },
+        type: inventorySchema,
         required: true
     }
 });

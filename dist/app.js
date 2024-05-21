@@ -20,7 +20,7 @@ app.use("/api/products", product_route_1.productRoute);
 app.all("*", (req, res) => {
     res.status(400).json({
         success: false,
-        message: req.url + " router not found"
+        message: "Route not found"
     });
 });
 exports.default = app;

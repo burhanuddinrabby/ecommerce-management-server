@@ -10,7 +10,17 @@ const variantSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     }
-});
+}, { _id: false });
+const inventorySchema = new mongoose_1.Schema({
+    quantity: {
+        type: Number,
+        required: true,
+    },
+    inStock: {
+        type: Boolean,
+        required: true,
+    }
+}, { _id: false });
 const ProductSchema = new mongoose_1.Schema({
     name: {
         type: String,
@@ -39,10 +49,7 @@ const ProductSchema = new mongoose_1.Schema({
         required: true
     },
     inventory: {
-        type: {
-            quantity: Number,
-            inStock: Boolean
-        },
+        type: inventorySchema,
         required: true
     }
 });

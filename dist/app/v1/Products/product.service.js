@@ -18,16 +18,36 @@ const createProductIntoDB = (product) => __awaiter(void 0, void 0, void 0, funct
     const data = yield product_model_1.default.create(product);
     return data;
 });
-const getAllProductsFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield product_model_1.default.find();
+const getAllProductsFromDB = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
+    const regex = new RegExp(searchTerm, 'i'); // 'i' makes it case-insensitive
+    const data = yield product_model_1.default.find({
+        $or: [
+            { name: regex },
+            { description: regex },
+            { tags: regex },
+        ],
+    });
+    // const data = await ProductModel.find();
     return data;
 });
 const getProductByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield product_model_1.default.findById(id);
     return data;
 });
+const deleteProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield product_model_1.default.findByIdAndDelete(id);
+    return data;
+});
+const updateProduct = (id, product) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield product_model_1.default.updateOne({
+        _id: id
+    }, product);
+    return data;
+});
 exports.productServices = {
     createProductIntoDB,
     getAllProductsFromDB,
-    getProductByIdFromDB
+    getProductByIdFromDB,
+    deleteProduct,
+    updateProduct
 };
