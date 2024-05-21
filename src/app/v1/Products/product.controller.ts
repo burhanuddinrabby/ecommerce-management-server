@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { productServices } from "./product.service";
-import { z } from "zod";
 import productValidationSchema from "./product.validate";
 
 // creates a product
@@ -19,7 +18,7 @@ const createProduct = async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(400).json({
             success: false,
-            message: err?.issues
+            message: err?.issues[0]?.message
         })
     }
 };

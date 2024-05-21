@@ -30,6 +30,10 @@ const deleteProduct = async (id: string) => {
 }
 
 const updateProduct = async (id: string, product: Product) => {
+    const quantity = product?.inventory?.quantity;
+    if(quantity > 0) {
+        product.inventory.inStock = true;
+    }
     const data = await ProductModel.updateOne({
         _id: id
     }, product);
