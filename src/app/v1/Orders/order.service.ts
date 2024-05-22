@@ -1,3 +1,4 @@
+import { Request } from "express";
 import { Product } from "../Products/product.interface";
 import ProductModel from "../Products/product.model";
 import { Order } from "./order.interface";
@@ -26,6 +27,12 @@ const createOrder = async (order: Order) => {
     return result;
 }
 
+const getOrders = async (req : Request) => {
+    const data = await orderModel.find(req.query);
+    return data;
+}
+
 export const orderServices = {
-    createOrder
+    createOrder,
+    getOrders
 }

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const product_route_1 = require("./app/v1/Products/product.route");
+const order_route_1 = require("./app/v1/Orders/order.route");
 // middlewares
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -16,6 +17,8 @@ app.get('/', (req, res) => {
 });
 //product routes
 app.use("/api/products", product_route_1.productRoute);
+//order routes
+app.use("/api/orders", order_route_1.orderRoute);
 // unknown route
 app.all("*", (req, res) => {
     res.status(400).json({

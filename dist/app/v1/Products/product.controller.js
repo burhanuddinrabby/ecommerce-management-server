@@ -17,6 +17,7 @@ const product_service_1 = require("./product.service");
 const product_validate_1 = __importDefault(require("./product.validate"));
 // creates a product
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         //zod validation
         const validatedData = product_validate_1.default.parse(req.body);
@@ -30,18 +31,18 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         res.status(400).json({
             success: false,
-            message: err === null || err === void 0 ? void 0 : err.issues
+            message: (_a = err === null || err === void 0 ? void 0 : err.issues[0]) === null || _a === void 0 ? void 0 : _a.message
         });
     }
 });
 // gets all products
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+    var _b, _c, _d;
     try {
-        const data = yield product_service_1.productServices.getAllProductsFromDB(((_a = req.query) === null || _a === void 0 ? void 0 : _a.searchTerm) || "");
+        const data = yield product_service_1.productServices.getAllProductsFromDB(((_b = req.query) === null || _b === void 0 ? void 0 : _b.searchTerm) || "");
         res.status(200).json({
             success: true,
-            message: ((_b = req.query) === null || _b === void 0 ? void 0 : _b.searchTerm) ? `Products matching search term '${(_c = req.query) === null || _c === void 0 ? void 0 : _c.searchTerm}' fetched successfully!` : "Products fetched successfully!",
+            message: ((_c = req.query) === null || _c === void 0 ? void 0 : _c.searchTerm) ? `Products matching search term '${(_d = req.query) === null || _d === void 0 ? void 0 : _d.searchTerm}' fetched successfully!` : "Products fetched successfully!",
             data: data
         });
     }

@@ -20,11 +20,33 @@ const handleCreateOrder = async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(400).json({
             success: false,
-            message: err?.issues || "Produce id is not valid! or Quantity is greater than inventory quantity!"
+            message: err?.issues ? err?.issues[0]?.message : "Produce id is not valid! or Quantity is greater than inventory quantity!"
         })
     }
 }
 
+const handleGetOrders = async (req: Request, res: Response) => {
+    try {
+        const data = await orderServices.getOrders(req);
+        
+        if(data.length === 0){
+            throw new Error("Order not found")
+        }
+        res.status(200).json({
+            success: true,
+            message: "Orders fetched successfully!",
+            data: data
+        })
+    } catch (err: any) {
+        res.status(400).json({
+            success: false,
+            message: err.message
+        })
+    }
+
+}
+
 export const orderController = {
-    handleCreateOrder
+    handleCreateOrder,
+    handleGetOrders
 }

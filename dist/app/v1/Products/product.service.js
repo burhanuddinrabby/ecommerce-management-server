@@ -39,6 +39,11 @@ const deleteProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return data;
 });
 const updateProduct = (id, product) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const quantity = (_a = product === null || product === void 0 ? void 0 : product.inventory) === null || _a === void 0 ? void 0 : _a.quantity;
+    if (quantity > 0) {
+        product.inventory.inStock = true;
+    }
     const data = yield product_model_1.default.updateOne({
         _id: id
     }, product);
