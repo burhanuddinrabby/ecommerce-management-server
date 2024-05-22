@@ -102,14 +102,25 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _f;
+    var _f, _g, _h, _j, _k, _l, _m, _o;
     try {
         const { productId } = req.params;
-        const data = yield product_service_1.productServices.updateProduct(productId, req.body);
+        const prevProduct = yield product_service_1.productServices.getProductByIdFromDB(productId);
         //if no data is found
-        if (data.matchedCount === 0) {
+        if (!prevProduct) {
             throw new Error("Product with _id:" + productId + " not found!");
         }
+        const updatedProductData = {
+            name: ((_f = req === null || req === void 0 ? void 0 : req.body) === null || _f === void 0 ? void 0 : _f.name) || prevProduct.name,
+            price: ((_g = req === null || req === void 0 ? void 0 : req.body) === null || _g === void 0 ? void 0 : _g.price) || prevProduct.price,
+            description: ((_h = req === null || req === void 0 ? void 0 : req.body) === null || _h === void 0 ? void 0 : _h.description) || prevProduct.description,
+            category: ((_j = req === null || req === void 0 ? void 0 : req.body) === null || _j === void 0 ? void 0 : _j.category) || prevProduct.category,
+            tags: ((_k = req === null || req === void 0 ? void 0 : req.body) === null || _k === void 0 ? void 0 : _k.tags) || prevProduct.tags,
+            variants: ((_l = req === null || req === void 0 ? void 0 : req.body) === null || _l === void 0 ? void 0 : _l.variants) || prevProduct.variants,
+            inventory: ((_m = req === null || req === void 0 ? void 0 : req.body) === null || _m === void 0 ? void 0 : _m.inventory) || prevProduct.inventory
+        };
+        const validatedData = product_validate_1.default.parse(updatedProductData);
+        const data = yield product_service_1.productServices.updateProduct(productId, validatedData);
         //if data is not updated 
         if (data.modifiedCount === 0) {
             throw new Error("Product was not updated!");
@@ -124,7 +135,7 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         res.status(400).json({
             success: false,
-            message: (err === null || err === void 0 ? void 0 : err.issues) ? (_f = err === null || err === void 0 ? void 0 : err.issues[0]) === null || _f === void 0 ? void 0 : _f.message : ((err instanceof Error) ? err === null || err === void 0 ? void 0 : err.message : "Something went wrong!")
+            message: (err === null || err === void 0 ? void 0 : err.issues) ? (_o = err === null || err === void 0 ? void 0 : err.issues[0]) === null || _o === void 0 ? void 0 : _o.message : ((err instanceof Error) ? err === null || err === void 0 ? void 0 : err.message : "Something went wrong!")
         });
     }
 });

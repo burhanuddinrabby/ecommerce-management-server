@@ -79,7 +79,7 @@ const deleteProduct = async (req: Request, res: Response) => {
         const data = await productServices.deleteProduct(productId);
 
         //if no data is found
-        if(!data){
+        if (!data) {
             throw new Error("Product deletion failed!");
         }
         res.status(200).json({
@@ -99,14 +99,29 @@ const updateProduct = async (req: Request, res: Response) => {
     try {
         const { productId } = req.params;
 
-        const data = await productServices.updateProduct(productId, req.body);
+        const prevProduct = await productServices.getProductByIdFromDB(productId);
 
         //if no data is found
-        if(data.matchedCount === 0){
-            throw new Error("Product with _id:" + productId +  " not found!");
+        if (!prevProduct) {
+            throw new Error("Product with _id:" + productId + " not found!");
         }
+
+        const updatedProductData = {
+            name: req?.body?.name || prevProduct.name,
+            price: req?.body?.price || prevProduct.price,
+            description: req?.body?.description || prevProduct.description,
+            category: req?.body?.category || prevProduct.category,
+            tags: req?.body?.tags || prevProduct.tags,
+            variants: req?.body?.variants || prevProduct.variants,
+            inventory: req?.body?.inventory || prevProduct.inventory
+        }
+
+        const validatedData = productValidationSchema.parse(updatedProductData);
+
+        const data = await productServices.updateProduct(productId, validatedData);
+
         //if data is not updated 
-        if(data.modifiedCount === 0){
+        if (data.modifiedCount === 0) {
             throw new Error("Product was not updated!");
         }
         const updatedProduct = await productServices.getProductByIdFromDB(productId);
