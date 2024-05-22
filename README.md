@@ -160,3 +160,78 @@ If you clone this project to your local folder and try to run on your pc follow 
   ]
 }
 ```
+
+#
+
+# Order management
+
+## Create a new order
+
+**Endpoint**: **`/api/orders`** <br>
+**Method: `POST`** <br>
+**REQUEST TYPE:** <br>
+
+```js
+{
+    email: string,//valid email address
+    productId: string, //valid product id
+    price: positive integer,
+    quantity: positive integer
+}
+```
+
+**A SUCCESSFUL RESPONSE** <br>
+
+```json
+{
+  "success": true,
+  "message": "Order created successfully!",
+  "data": {
+    //data
+  }
+}
+```
+
+#
+
+# All orders
+
+**Endpoint**: **`/api/orders`** <br>
+**Method: `GET`** <br>
+**A SUCCESSFUL RESPONSE** <br>
+
+```json
+{
+  "success": true,
+  "message": "Orders fetched successfully!",
+  "data": [
+    // all orders...
+  ]
+}
+```
+
+#
+
+# Orders by email
+
+**Endpoint**: `/api/orders?email=level2@programming-hero.com` <br>
+**Method:** `GET`<br>
+**A SUCCESSFUL RESPONSE** <br>
+```json
+{
+  "success": true,
+  "message": "Orders fetched successfully for user email!",
+  "data": [
+    // orders for the corresponding email...
+  ]
+}
+```
+## What is in this project?
+I have implemented this project using
+- Node JS
+- Express JS
+- Mongoose
+- Typescript
+- zod for validation
+
+and more..
