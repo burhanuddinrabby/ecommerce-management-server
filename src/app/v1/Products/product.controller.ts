@@ -86,16 +86,22 @@ const updateProduct = async (req: Request, res: Response) => {
         // const validatedData = productValidationSchema.parse(req.body);
 
         const data = await productServices.updateProduct(productId, req.body);
-
+        if(data.matchedCount === 0){
+            throw new Error("Product with _id:" + productId +  " not found!");
+        }
+        if(data.modifiedCount === 0){
+            throw new Error("Product was not updated!");
+        }
+        const updatedProduct = await productServices.getProductByIdFromDB(productId);
         res.status(200).json({
             success: true,
             message: "Product updated successfully!",
-            data: data
+            data: updatedProduct
         })
     } catch (err: any) {
         res.status(400).json({
             success: false,
-            message: err?.issues
+            message: err?.issues ? err?.issues[0]?.message : ((err instanceof Error) ? err?.message : "Something went wrong!")
         })
     }
 

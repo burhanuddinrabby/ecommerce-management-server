@@ -23,7 +23,10 @@ const productValidationSchema = zod_1.z.object({
     tags: zod_1.z.array(zod_1.z.string({
         required_error: "Tags are required",
         invalid_type_error: "Tags must be an array of strings",
-    })),
+    }), {
+        required_error: "Tags are required",
+        invalid_type_error: "Tags must be an array of strings",
+    }),
     variants: zod_1.z.array(zod_1.z.object({
         type: zod_1.z.string({
             required_error: "Type is required",

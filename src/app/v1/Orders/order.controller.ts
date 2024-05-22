@@ -20,7 +20,7 @@ const handleCreateOrder = async (req: Request, res: Response) => {
     } catch (err: any) {
         res.status(400).json({
             success: false,
-            message: err?.issues ? err?.issues[0]?.message : "Produce id is not valid! or Quantity is greater than inventory quantity!"
+            message: err?.issues ? err?.issues[0]?.message : "Product id is not valid! or Quantity is greater than inventory quantity!"
         })
     }
 }

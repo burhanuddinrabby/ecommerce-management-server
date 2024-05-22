@@ -33,7 +33,7 @@ const handleCreateOrder = (req, res) => __awaiter(void 0, void 0, void 0, functi
     catch (err) {
         res.status(400).json({
             success: false,
-            message: (err === null || err === void 0 ? void 0 : err.issues) ? (_a = err === null || err === void 0 ? void 0 : err.issues[0]) === null || _a === void 0 ? void 0 : _a.message : "Produce id is not valid! or Quantity is greater than inventory quantity!"
+            message: (err === null || err === void 0 ? void 0 : err.issues) ? (_a = err === null || err === void 0 ? void 0 : err.issues[0]) === null || _a === void 0 ? void 0 : _a.message : "Product id is not valid! or Quantity is greater than inventory quantity!"
         });
     }
 });

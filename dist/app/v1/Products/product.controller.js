@@ -89,20 +89,28 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _e;
     try {
         const { productId } = req.params;
         // const validatedData = productValidationSchema.parse(req.body);
         const data = yield product_service_1.productServices.updateProduct(productId, req.body);
+        if (data.matchedCount === 0) {
+            throw new Error("Product with _id:" + productId + " not found!");
+        }
+        if (data.modifiedCount === 0) {
+            throw new Error("Product was not updated!");
+        }
+        const updatedProduct = yield product_service_1.productServices.getProductByIdFromDB(productId);
         res.status(200).json({
             success: true,
             message: "Product updated successfully!",
-            data: data
+            data: updatedProduct
         });
     }
     catch (err) {
         res.status(400).json({
             success: false,
-            message: err === null || err === void 0 ? void 0 : err.issues
+            message: (err === null || err === void 0 ? void 0 : err.issues) ? (_e = err === null || err === void 0 ? void 0 : err.issues[0]) === null || _e === void 0 ? void 0 : _e.message : ((err instanceof Error) ? err === null || err === void 0 ? void 0 : err.message : "Something went wrong!")
         });
     }
 });
