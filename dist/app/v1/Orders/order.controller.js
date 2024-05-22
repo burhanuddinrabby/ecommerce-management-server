@@ -52,7 +52,7 @@ const handleGetOrders = (req, res) => __awaiter(void 0, void 0, void 0, function
     catch (err) {
         res.status(400).json({
             success: false,
-            message: err.message
+            message: err === null || err === void 0 ? void 0 : err.message
         });
     }
 });

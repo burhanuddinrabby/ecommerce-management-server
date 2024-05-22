@@ -37,12 +37,15 @@ const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 // gets all products
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b, _c, _d;
+    var _b, _c, _d, _e;
     try {
         const data = yield product_service_1.productServices.getAllProductsFromDB(((_b = req.query) === null || _b === void 0 ? void 0 : _b.searchTerm) || "");
+        if (data.length === 0) {
+            throw new Error(`No product was found matching search term ${(_c = req.query) === null || _c === void 0 ? void 0 : _c.searchTerm}`);
+        }
         res.status(200).json({
             success: true,
-            message: ((_c = req.query) === null || _c === void 0 ? void 0 : _c.searchTerm) ? `Products matching search term '${(_d = req.query) === null || _d === void 0 ? void 0 : _d.searchTerm}' fetched successfully!` : "Products fetched successfully!",
+            message: ((_d = req.query) === null || _d === void 0 ? void 0 : _d.searchTerm) ? `Products matching search term '${(_e = req.query) === null || _e === void 0 ? void 0 : _e.searchTerm}' fetched successfully!` : "Products fetched successfully!",
             data: data
         });
     }
@@ -89,7 +92,7 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _e;
+    var _f;
     try {
         const { productId } = req.params;
         // const validatedData = productValidationSchema.parse(req.body);
@@ -110,7 +113,7 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     catch (err) {
         res.status(400).json({
             success: false,
-            message: (err === null || err === void 0 ? void 0 : err.issues) ? (_e = err === null || err === void 0 ? void 0 : err.issues[0]) === null || _e === void 0 ? void 0 : _e.message : ((err instanceof Error) ? err === null || err === void 0 ? void 0 : err.message : "Something went wrong!")
+            message: (err === null || err === void 0 ? void 0 : err.issues) ? (_f = err === null || err === void 0 ? void 0 : err.issues[0]) === null || _f === void 0 ? void 0 : _f.message : ((err instanceof Error) ? err === null || err === void 0 ? void 0 : err.message : "Something went wrong!")
         });
     }
 });

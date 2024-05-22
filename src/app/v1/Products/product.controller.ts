@@ -28,6 +28,9 @@ const getAllProducts = async (req: Request, res: Response) => {
     try {
         const data = await productServices.getAllProductsFromDB(req.query?.searchTerm as string || "");
 
+        if (data.length === 0) {
+            throw new Error(`No product was found matching search term ${req.query?.searchTerm}`)
+        }
         res.status(200).json({
             success: true,
             message: req.query?.searchTerm ? `Products matching search term '${req.query?.searchTerm}' fetched successfully!` : "Products fetched successfully!",
