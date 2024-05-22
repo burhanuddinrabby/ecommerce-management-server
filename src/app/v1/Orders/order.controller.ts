@@ -9,6 +9,8 @@ const handleCreateOrder = async (req: Request, res: Response) => {
         const validatedData = orderValidationSchema.parse(req.body);
 
         const data : Order | null = await orderServices.createOrder(validatedData);
+
+        //if data creation fails
         if (!data) {
             throw new Error();
         };
@@ -29,6 +31,7 @@ const handleGetOrders = async (req: Request, res: Response) => {
     try {
         const data = await orderServices.getOrders(req);
         
+        //if no orders is found
         if(data.length === 0){
             throw new Error("Order not found")
         }

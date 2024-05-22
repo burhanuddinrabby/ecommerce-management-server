@@ -19,9 +19,11 @@ const createOrder = (order) => __awaiter(void 0, void 0, void 0, function* () {
     const productId = order.productId;
     const orderQuantity = order.quantity;
     const product = yield product_model_1.default.findById(productId);
+    //check if product exists and if the order quantity is greater than the inventory quantity
     if (!product || orderQuantity > product.inventory.quantity) {
         return null;
     }
+    //update the product inventory after order is placed
     const newQuantity = product.inventory.quantity - orderQuantity;
     const updatedProduct = yield product_model_1.default.findByIdAndUpdate({ _id: productId }, {
         inventory: {

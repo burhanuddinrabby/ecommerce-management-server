@@ -20,11 +20,13 @@ const createProductIntoDB = (product) => __awaiter(void 0, void 0, void 0, funct
 });
 const getAllProductsFromDB = (searchTerm) => __awaiter(void 0, void 0, void 0, function* () {
     const regex = new RegExp(searchTerm, 'i'); // 'i' makes it case-insensitive
+    // data that matches term in name, description or tags
     const data = yield product_model_1.default.find({
         $or: [
             { name: regex },
             { description: regex },
             { tags: regex },
+            { variants: { $elemMatch: { type: regex } } }
         ],
     });
     // const data = await ProductModel.find();

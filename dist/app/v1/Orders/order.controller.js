@@ -20,6 +20,7 @@ const handleCreateOrder = (req, res) => __awaiter(void 0, void 0, void 0, functi
     try {
         const validatedData = order_validate_1.default.parse(req.body);
         const data = yield order_service_1.orderServices.createOrder(validatedData);
+        //if data creation fails
         if (!data) {
             throw new Error();
         }
@@ -40,6 +41,7 @@ const handleCreateOrder = (req, res) => __awaiter(void 0, void 0, void 0, functi
 const handleGetOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield order_service_1.orderServices.getOrders(req);
+        //if no orders is found
         if (data.length === 0) {
             throw new Error("Order not found");
         }

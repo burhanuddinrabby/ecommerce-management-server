@@ -8,11 +8,14 @@ const createProductIntoDB = async (product: Product) => {
 
 const getAllProductsFromDB = async (searchTerm: string) => {
     const regex = new RegExp(searchTerm, 'i'); // 'i' makes it case-insensitive
+
+    // data that matches term in name, description or tags
     const data = await ProductModel.find({
         $or: [
             { name: regex },
             { description: regex },
             { tags: regex },
+            { variants: { $elemMatch: { type: regex } } }
         ],
     });
     // const data = await ProductModel.find();
@@ -31,7 +34,7 @@ const deleteProduct = async (id: string) => {
 
 const updateProduct = async (id: string, product: Product) => {
     const quantity = product?.inventory?.quantity;
-    if(quantity > 0) {
+    if (quantity > 0) {
         product.inventory.inStock = true;
     }
     const data = await ProductModel.updateOne({

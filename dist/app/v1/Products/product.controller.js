@@ -40,9 +40,11 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
     var _b, _c, _d, _e;
     try {
         const data = yield product_service_1.productServices.getAllProductsFromDB(((_b = req.query) === null || _b === void 0 ? void 0 : _b.searchTerm) || "");
+        //if no data is found
         if (data.length === 0) {
             throw new Error(`No product was found matching search term ${(_c = req.query) === null || _c === void 0 ? void 0 : _c.searchTerm}`);
         }
+        //successful response
         res.status(200).json({
             success: true,
             message: ((_d = req.query) === null || _d === void 0 ? void 0 : _d.searchTerm) ? `Products matching search term '${(_e = req.query) === null || _e === void 0 ? void 0 : _e.searchTerm}' fetched successfully!` : "Products fetched successfully!",
@@ -61,6 +63,10 @@ const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, functio
     try {
         const { productId } = req.params;
         const data = yield product_service_1.productServices.getProductByIdFromDB(productId);
+        //if no data is found
+        if (!data) {
+            throw new Error(`No product was found by _id:${productId}`);
+        }
         res.status(200).json({
             success: true,
             message: "Product fetched successfully!",
@@ -78,10 +84,14 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     try {
         const { productId } = req.params;
         const data = yield product_service_1.productServices.deleteProduct(productId);
+        //if no data is found
+        if (!data) {
+            throw new Error("Product deletion failed!");
+        }
         res.status(200).json({
             success: true,
             message: "Product deleted successfully!",
-            data: null
+            data: data
         });
     }
     catch (err) {
@@ -95,11 +105,12 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     var _f;
     try {
         const { productId } = req.params;
-        // const validatedData = productValidationSchema.parse(req.body);
         const data = yield product_service_1.productServices.updateProduct(productId, req.body);
+        //if no data is found
         if (data.matchedCount === 0) {
             throw new Error("Product with _id:" + productId + " not found!");
         }
+        //if data is not updated 
         if (data.modifiedCount === 0) {
             throw new Error("Product was not updated!");
         }

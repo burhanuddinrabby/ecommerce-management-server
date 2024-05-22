@@ -28,9 +28,12 @@ const getAllProducts = async (req: Request, res: Response) => {
     try {
         const data = await productServices.getAllProductsFromDB(req.query?.searchTerm as string || "");
 
+        //if no data is found
         if (data.length === 0) {
             throw new Error(`No product was found matching search term ${req.query?.searchTerm}`)
         }
+
+        //successful response
         res.status(200).json({
             success: true,
             message: req.query?.searchTerm ? `Products matching search term '${req.query?.searchTerm}' fetched successfully!` : "Products fetched successfully!",
@@ -51,6 +54,11 @@ const getSingleProduct = async (req: Request, res: Response) => {
         const { productId } = req.params;
         const data = await productServices.getProductByIdFromDB(productId);
 
+        //if no data is found
+        if (!data) {
+            throw new Error(`No product was found by _id:${productId}`)
+        }
+
         res.status(200).json({
             success: true,
             message: "Product fetched successfully!",
@@ -70,10 +78,14 @@ const deleteProduct = async (req: Request, res: Response) => {
         const { productId } = req.params;
         const data = await productServices.deleteProduct(productId);
 
+        //if no data is found
+        if(!data){
+            throw new Error("Product deletion failed!");
+        }
         res.status(200).json({
             success: true,
             message: "Product deleted successfully!",
-            data: null
+            data: data
         })
     } catch (err: any) {
         res.status(400).json({
@@ -86,12 +98,14 @@ const deleteProduct = async (req: Request, res: Response) => {
 const updateProduct = async (req: Request, res: Response) => {
     try {
         const { productId } = req.params;
-        // const validatedData = productValidationSchema.parse(req.body);
 
         const data = await productServices.updateProduct(productId, req.body);
+
+        //if no data is found
         if(data.matchedCount === 0){
             throw new Error("Product with _id:" + productId +  " not found!");
         }
+        //if data is not updated 
         if(data.modifiedCount === 0){
             throw new Error("Product was not updated!");
         }

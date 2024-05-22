@@ -9,19 +9,20 @@ const createOrder = async (order: Order) => {
     const orderQuantity : number = order.quantity;
     
     const product : Product | null = await ProductModel.findById(productId);
+    
+    //check if product exists and if the order quantity is greater than the inventory quantity
     if (!product || orderQuantity > product.inventory.quantity){
         return null;
     }
 
+    //update the product inventory after order is placed
     const newQuantity = product.inventory.quantity - orderQuantity;
     const updatedProduct = await ProductModel.findByIdAndUpdate({_id : productId},{
         inventory: {
             quantity: newQuantity,
             inStock: newQuantity > 0 ? true : false
         }
-    })
-
-
+    });
 
     const result = await orderModel.create(order);
     return result;
